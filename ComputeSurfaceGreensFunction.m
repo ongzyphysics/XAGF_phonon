@@ -37,7 +37,7 @@ function LeadPhonon = ComputeSurfaceGreensFunction(w_in,ww_in,InputParam)
       TauR = -HR;
       TauL = -HL;
     
-      m_max = 40; % maximum number of recursive steps in self-consistent inner loop
+      m_max = 100; % maximum number of recursive steps in self-consistent inner loop
 
       % disp('Flag 1'); % DEBUG            
       % === Compute frequency-dependent surface Green's functions from ww, HL, HC and HR ===
@@ -108,17 +108,18 @@ function LeadPhonon = ComputeSurfaceGreensFunction(w_in,ww_in,InputParam)
       % [U_minus_adv,InvL_minus_adv] = eig(InvF_minus_adv); 
         % Eigenvectors and values (phase factors) of advanced left-propagating Bloch matrix, for initial states (left-to-right)
          
+      tol_L = 1E-3; % tolerance for distinguishing propagating modes from evanescent modes
       Q_plus = imag(log(diag(L_plus))).* ...
-               and(gt(diag(abs(L_plus)),0.95),lt(diag(abs(L_plus)),1.05)); % column vector
+               and(gt(diag(abs(L_plus)),1-tol_L),lt(diag(abs(L_plus)),1+tol_L)); % column vector
         % Extract wave vectors of right-propagating retarded states (between 0 and 2 pi), set to zero for evanescent states
       % Q_plus_adv = imag(log(diag(L_plus_adv))).* ... 
-      %              and(gt(diag(abs(L_plus_adv)),0.95),lt(diag(abs(L_plus_adv)),1.05)); % column vector
+      %              and(gt(diag(abs(L_plus_adv)),1-tol_L),lt(diag(abs(L_plus_adv)),1+tol_L)); % column vector
         % Extract wave vectors of right-propagating advanced states (between 0 and 2 pi), set to zero for evanescent states
       Q_minus = -imag(log(diag(InvL_minus))).* ... 
-                and(gt(diag(abs(InvL_minus)),0.95),lt(diag(abs(InvL_minus)),1.05)); % column vector
+                and(gt(diag(abs(InvL_minus)),1-tol_L),lt(diag(abs(InvL_minus)),1+tol_L)); % column vector
         % Extract wave vectors of left-propagating retarded states (between 0 and 2 pi), set to zero for evanescent states
       % Q_minus_adv = -imag(log(diag(InvL_minus_adv))).* ... 
-      %               and(gt(diag(abs(InvL_minus_adv)),0.95),lt(diag(abs(InvL_minus_adv)),1.05)); % column vector
+      %               and(gt(diag(abs(InvL_minus_adv)),1-tol_L),lt(diag(abs(InvL_minus_adv)),1+tol_L)); % column vector
         % Extract wave vectors of left-propagating advanced states (between 0 and 2 pi), set to zero for evanescent states
 
       U_plus      = OrthonormEigenmodes(U_plus,Q_plus);
@@ -155,6 +156,20 @@ function LeadPhonon = ComputeSurfaceGreensFunction(w_in,ww_in,InputParam)
       V_minus_adv = real(a_long/(2*w)*U_minus_adv'*Gamma_L*U_minus_adv);
         % Group velocities of left-propagating advanced states, should be positive
 
+      VecV_plus = diag(V_plus);
+      VecV_plus_adv = diag(V_plus_adv);
+      VecV_minus = diag(V_minus); 
+      VecV_minus_adv = diag(V_minus_adv); 
+      VecV_plus(nrange_plus_ev,1) = 0; % set velocity of evanescent states to zero
+      VecV_plus_adv(nrange_plus_ev,1) = 0; % set velocity of evanescent states to zero
+      VecV_minus(nrange_minus_ev,1) = 0; % set velocity of evanescent states to zero
+      VecV_minus_adv(nrange_minus_ev,1) = 0; % set velocity of evanescent states to zero
+      
+      V_plus = sparse( diag(VecV_plus) ); % sparsify matrix
+      V_plus_adv = sparse( diag(VecV_plus_adv) ); % sparsify matrix      
+      V_minus = sparse( diag( VecV_minus) ); % sparsify matrix
+      V_minus_adv = sparse( diag(VecV_minus_adv) ); % sparsify matrix     
+      
       %{
       BigG = InvWb;    
       t_L = 2*1i*w*sqrt(V_plus)*pinv(U_plus)*BigG*pinv(U_minus_adv')*sqrt(V_minus_adv)/a_long;
@@ -189,6 +204,9 @@ function LeadPhonon = ComputeSurfaceGreensFunction(w_in,ww_in,InputParam)
       LeadPhonon.VecQ_plus_adv  = Q_plus_adv;  % between 0 ans 2 pi
       LeadPhonon.VecQ_minus     = Q_minus;     % between 0 ans 2 pi
       LeadPhonon.VecQ_minus_adv = Q_minus_adv; % between 0 ans 2 pi
+
+      LeadPhonon.VecL_plus      = diag(L_plus);      % DEBUG: Eigenvalues for retarded right-propagating Bloch matrix
+      LeadPhonon.VecInvL_minus  = diag(InvL_minus);  % DEBUG: Eigenvalues for retarded left-propagating Bloch matrix
 
       %{
       LeadPhonon.VecT_plus      = T_plus;
