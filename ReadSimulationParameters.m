@@ -21,9 +21,10 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
 
   % === Left-lead KL matrix ===
   filename = 'Left_KL.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r');
+  if gt(fid,0)
       fprintf(1,'\t  <%s> ',filename); % name of text file containing KL matrix
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -36,20 +37,16 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
       else % i.e. if there are no imaginary components
           LeftLeadParam.MatKL = TempMat;
       end    
-      LeftLeadParam.MatKL = sparse(LeftLeadParam.MatKL);
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing KL matrix
-      tmp = load(filename_mat,'-mat');
-      LeftLeadParam.MatKL = sparse(tmp.KL);
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Left-lead KC matrix ===
   filename = 'Left_KC.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r');
+  if gt(fid,0)
       fprintf(1,'   <%s> ',filename); % name of text file containing KC matrix
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -62,20 +59,16 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
       else % i.e. if there are no imaginary components
           LeftLeadParam.MatKC = TempMat;
       end    
-      LeftLeadParam.MatKC = sparse(LeftLeadParam.MatKC);
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing KC matrix
-      tmp = load(filename_mat,'-mat');
-      LeftLeadParam.MatKC = sparse(tmp.KC);
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Left-lead KR matrix ===
   filename = 'Left_KR.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r');
+  if gt(fid,0)
       fprintf(1,'   <%s> ',filename); % name of text file containing KR matrix
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -87,21 +80,17 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
               + 1i*TempMat(1:nmatrows,(1:nmatrows)+nmatrows);
       else % i.e. if there are no imaginary components
           LeftLeadParam.MatKR = TempMat;
-      end
-      LeftLeadParam.MatKR = sparse(LeftLeadParam.MatKR);    
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing KR matrix  
-      tmp = load(filename_mat,'-mat');
-      LeftLeadParam.MatKR = sparse(tmp.KR);
+      end    
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Left-lead M matrix ===
   filename = 'Left_M.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r'); % name of text file containing M matrix
+  if gt(fid,0)
       fprintf(1,'   <%s> ',filename);
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -114,13 +103,8 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
       else % i.e. if there are no imaginary components
           LeftLeadParam.MatM = TempMat;
       end    
-      LeftLeadParam.MatM = sparse(LeftLeadParam.MatM);
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing M matrix
-      tmp = load(filename_mat,'-mat');
-      LeftLeadParam.MatM = sparse(tmp.M);
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Left lead parameters ===
@@ -276,9 +260,10 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
 
   % === Right KL matrix ===
   filename = 'Right_KL.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r');
+  if gt(fid,0)
       fprintf(1,'\t  <%s> ',filename); % name of text file containing KL matrix
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -290,21 +275,17 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
               + 1i*TempMat(1:nmatrows,(1:nmatrows)+nmatrows);
       else % i.e. if there are no imaginary components
           RightLeadParam.MatKL = TempMat;
-      end  
-      RightLeadParam.MatKL = sparse(RightLeadParam.MatKL);              
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing KL matrix  
-      tmp = load(filename_mat,'-mat');
-      RightLeadParam.MatKL = sparse(tmp.KL);              
+      end    
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));      
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Right KC matrix ===
   filename = 'Right_KC.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r');
+  if gt(fid,0)
       fprintf(1,'   <%s>',filename); % name of text file containing KC matrix
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -317,20 +298,16 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
       else % i.e. if there are no imaginary components
           RightLeadParam.MatKC = TempMat;
       end    
-      RightLeadParam.MatKC = sparse(RightLeadParam.MatKC);              
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing KC matrix    
-      tmp = load(filename_mat,'-mat');
-      RightLeadParam.MatKC = sparse(tmp.KC);              
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));      
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Right KR matrix ===
   filename = 'Right_KR.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r');
+  if gt(fid,0)
       fprintf(1,'   <%s>',filename); % name of text file containing KR matrix
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -343,20 +320,16 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
       else % i.e. if there are no imaginary components
           RightLeadParam.MatKR = TempMat;
       end    
-      RightLeadParam.MatKR = sparse(RightLeadParam.MatKR);    
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing KR matrix      
-      tmp = load(filename_mat,'-mat');
-      RightLeadParam.MatKR = sparse(tmp.KR);              
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));      
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Right M matrix ===
   filename = 'Right_M.agf';
-  filename_mat = sprintf('%sm',filename); % file name of matlab data (.agfm) version 
-  if exist(filename)==2
+  fid = fopen(filename,'r');
+  if gt(fid,0)
       fprintf(1,'   <%s>',filename); % name of text file containing M matrix
+      fclose(fid);
 
       TempMat = importdata(filename,' ',0);
       nmatrows = size(TempMat,1); % no. of rows
@@ -369,13 +342,8 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
       else % i.e. if there are no imaginary components
           RightLeadParam.MatM = TempMat;
       end    
-      RightLeadParam.MatM = sparse(RightLeadParam.MatM);                    
-  elseif exist(filename_mat)==2
-      fprintf(1,'\t  <%s> ',filename_mat); % name of text file containing M matrix      
-      tmp = load(filename_mat,'-mat');
-      RightLeadParam.MatM = sparse(tmp.M);                    
   else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));      
+      error(sprintf('<!!!> %s not found.',filename));
   end
 
   % === Right lead parameters ===
@@ -542,11 +510,10 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
 
   nlayer = 1;
   filename = sprintf('Center_M%d.agf',nlayer);
-  filename_mat = sprintf('Center_M%d.agfm',nlayer);
-  % fid = fopen(filename);
+  fid = fopen(filename);
 
-  if exist(filename)==2   
-      while( exist(filename)==2 )
+  if gt(fid,0)   
+      while( gt(fid,0) )
           % === M submatrix for layer 'nlayer' ===
           M_filename = sprintf('Center_M%d.agf',nlayer);
 
@@ -562,36 +529,23 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
           else
               Lyr(nlayer).MatM = TempMat;
           end    
-          Lyr(nlayer).MatM = sparse(Lyr(nlayer).MatM);
 
-          % fclose(fid); % close text file with M matrix data        
+          fclose(fid); % close text file with M matrix data        
           nlayer = nlayer + 1;
         	
           filename = sprintf('Center_M%d.agf',nlayer);
-          % fid = fopen(filename); % try to open next text file with M matrix data
+          fid = fopen(filename); % try to open next text file with M matrix data
       end
-  elseif exist(filename_mat)==2 % Read M matrix data for layer 'nlayer'
-      while exist(filename_mat)==2
-          tmp = load(filename_mat,'-mat','M');
-          % Lyr(nlayer).MatM = full(tmp.M);
-          Lyr(nlayer).MatM = sparse(tmp.M);
-          
-          nlayer = nlayer + 1;
-          filename_mat = sprintf('Center_M%d.agfm',nlayer);
-      end
-  else
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));
   end
 
   % -------------------------------------------------------------------
 
   nlayer = 1;
   filename = sprintf('Center_KC%d.agf',nlayer);
-  filename_mat = sprintf('Center_KC%d.agfm',nlayer);
-  % fid = fopen(filename);
+  fid = fopen(filename);
 
-  if exist(filename)==2
-      while( exist(filename)==2 )
+  if gt(fid,0)   
+      while( gt(fid,0) )
           if eq(nlayer,1)
               nrows_L = size(LeftLeadParam.MatM,1); % no. of degrees of freedom in slice left of current layer
           else
@@ -608,9 +562,6 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
 
           % === KL submatrix for layer 'nlayer' ===
           KL_filename = sprintf('Center_KL%d.agf',nlayer);
-          if not(exist(KL_filename)==2)
-              error(sprintf('<!!!> %s not found.',KL_filename));
-          end
 
           TempMat = importdata(KL_filename,' ',0);
           nmatrows = size(TempMat,1); % no. of rows
@@ -623,14 +574,18 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
           else
               Lyr(nlayer).MatKL = TempMat;
           end    
-          Lyr(nlayer).MatKL = sparse(Lyr(nlayer).MatKL);
-
+          %{
+          if eq(size(TempMat,2),2*size(TempMat,1))
+              Lyr(nlayer).MatKL = ...
+                  TempMat(1:size(TempMat,1),1:size(TempMat,1)) ...
+                  + 1i*TempMat(1:size(TempMat,1),(1:size(TempMat,1))+size(TempMat,1));
+          else
+              Lyr(nlayer).MatKL = TempMat;
+          end    
+          %}
           % === KC submatrix for layer 'nlayer' ===
           KC_filename = sprintf('Center_KC%d.agf',nlayer);
-          if not(exist(KC_filename)==2)
-              error(sprintf('<!!!> %s not found.',KC_filename));
-          end
-
+ 
           TempMat = importdata(KC_filename,' ',0);
           nmatrows = size(TempMat,1); % no. of rows
           nmatcols = size(TempMat,2); % no. of columns
@@ -641,14 +596,18 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
                   + 1i*TempMat(1:nrows_C,(1:nrows_C)+nrows_C);
           else
               Lyr(nlayer).MatKC = TempMat;
-          end  
-          Lyr(nlayer).MatKC = sparse(Lyr(nlayer).MatKC);  
-
+          end    
+          %{
+          if eq(size(TempMat,2),2*size(TempMat,1))
+              Lyr(nlayer).MatKC = ...
+                  TempMat(1:size(TempMat,1),1:size(TempMat,1)) ...
+                  + 1i*TempMat(1:size(TempMat,1),(1:size(TempMat,1))+size(TempMat,1));
+          else
+              Lyr(nlayer).MatKC = TempMat;
+          end    
+          %}
           % === KR submatrix for layer 'nlayer' ===
           KR_filename = sprintf('Center_KR%d.agf',nlayer);
-          if not(exist(KR_filename)==2)
-              error(sprintf('<!!!> %s not found.',KR_filename));
-          end         
 
           TempMat = importdata(KR_filename,' ',0);
           nmatrows = size(TempMat,1); % no. of rows
@@ -661,13 +620,18 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
           else
               Lyr(nlayer).MatKR = TempMat;
           end    
-          Lyr(nlayer).MatKR = sparse(Lyr(nlayer).MatKR);
+          %{
+          if eq(size(TempMat,2),2*size(TempMat,1))
+              Lyr(nlayer).MatKR = ...
+                  TempMat(1:size(TempMat,1),1:size(TempMat,1)) ...
+                  + 1i*TempMat(1:size(TempMat,1),(1:size(TempMat,1))+size(TempMat,1));
+          else
+              Lyr(nlayer).MatKR = TempMat;
+          end    
+          %}
 
           % === M submatrix for layer 'nlayer' ===
           M_filename = sprintf('Center_M%d.agf',nlayer);
-          if not(exist(M_filename)==2)
-              error(sprintf('<!!!> %s not found.',M_filename));
-          end          
 
           TempMat = importdata(M_filename,' ',0);
           nmatrows = size(TempMat,1); % no. of rows
@@ -680,71 +644,19 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
           else
               Lyr(nlayer).MatM = TempMat;
           end    
-          Lyr(nlayer).MatM = sparse(Lyr(nlayer).MatM);
 
           fprintf(1,'\t  <%s>', KL_filename);
           fprintf(1,'   <%s>', KC_filename);
           fprintf(1,'   <%s>', KR_filename);
           fprintf(1,'   <%s> \n', M_filename);            
         
-          % fclose(fid);        
+          fclose(fid);        
           nlayer = nlayer + 1;
         
           filename = sprintf('Center_KC%d.agf',nlayer);
-          % fid = fopen(filename);
+          fid = fopen(filename);
       end
-  elseif exist(filename_mat)==2      
-      while( exist(filename_mat)==2 )  
-          % === KL submatrix for layer 'nlayer' ===
-          KL_filename_mat = sprintf('Center_KL%d.agfm',nlayer);
-          if not(exist(KL_filename_mat)==2)
-              error(sprintf('<!!!> %s not found.',KL_filename_mat));
-          end                    
-
-          tmp = load(KL_filename_mat,'-mat','KL');
-          % Lyr(nlayer).MatKL = full(tmp.KL);
-          Lyr(nlayer).MatKL = sparse(tmp.KL);
-
-          % === KC submatrix for layer 'nlayer' ===
-          KC_filename_mat = sprintf('Center_KC%d.agfm',nlayer);
-          if not(exist(KC_filename_mat)==2)
-              error(sprintf('<!!!> %s not found.',KC_filename_mat));
-          end                    
-
-          tmp = load(KC_filename_mat,'-mat','KC');
-          % Lyr(nlayer).MatKC = full(tmp.KC);
-          Lyr(nlayer).MatKC = sparse(tmp.KC);
-
-          % === KR submatrix for layer 'nlayer' ===
-          KR_filename_mat = sprintf('Center_KR%d.agfm',nlayer);
-          if not(exist(KR_filename_mat)==2)
-              error(sprintf('<!!!> %s not found.',KR_filename_mat));
-          end                              
-
-          tmp = load(KR_filename_mat,'-mat','KR');
-          % Lyr(nlayer).MatKR = full(tmp.KR);
-          Lyr(nlayer).MatKR = sparse(tmp.KR);
-
-          % === M submatrix for layer 'nlayer' ===
-          M_filename_mat = sprintf('Center_M%d.agfm',nlayer);
-          if not(exist(M_filename_mat)==2)
-              error(sprintf('<!!!> %s not found.',M_filename_mat));
-          end                              
-
-          tmp = load(M_filename_mat,'-mat','M');
-          % Lyr(nlayer).MatM = full(tmp.M);
-          Lyr(nlayer).MatM = sparse(tmp.M);
-
-          fprintf(1,'\t  <%s>', KL_filename_mat);
-          fprintf(1,'   <%s>', KC_filename_mat);
-          fprintf(1,'   <%s>', KR_filename_mat);
-          fprintf(1,'   <%s> \n', M_filename_mat);            
-          
-          nlayer = nlayer + 1; 
-          filename_mat = sprintf('Center_KC%d.agfm',nlayer);
-      end
-  else 
-      error(sprintf('<!!!> %s and %s not found.',filename,filename_mat));
+      % nlayer = nlayer - 1;
   end
 
   for nlayer = 1:numel(Lyr) % DEBUG
@@ -832,8 +744,6 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant acoustic sum rule violation (Left lead bulk), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Acoustic Sum Rule check passed (Left lead bulk) \n');      
   end
 
   % RightLeadParam.MatKC = RightLeadParam.MatKC - ...
@@ -843,8 +753,6 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant acoustic sum rule violation (Right lead bulk), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Acoustic Sum Rule check passed (Right lead bulk) \n');      
   end
 
   % err_check = sum(abs(sum([LeftLeadParam.MatKL LeftLeadParam.MatKC CenterParam.MatKLC],2)));
@@ -852,8 +760,6 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant acoustic sum rule violation (Left lead to channel), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Acoustic Sum Rule check passed (Left lead to channel) \n');      
   end
 
   % err_check = sum(abs(sum([CenterParam.MatKRC RightLeadParam.MatKC RightLeadParam.MatKR],2)));
@@ -861,8 +767,6 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant acoustic sum rule violation. (Right lead to channel), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Acoustic Sum Rule check passed (Right lead to channel) \n');      
   end
 
   for nlayer = 1:length(CenterParam.Lyr)
@@ -874,8 +778,6 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
       if gt(err_check,err_tol)
           warnmsg = sprintf('++ Possible significant acoustic sum rule violation (Channel layer %d), Epsilon = %8.4e',nlayer,err_check);
           warning(warnmsg);
-      else
-          fprintf(1,'\t  ... Acoustic Sum Rule check passed (Channel layer %d) \n',nlayer);      
       end    
   end
 
@@ -888,80 +790,63 @@ function [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters
   % -------------------------------------------------------------------
 
   % err_check = sum(sum(abs(LeftLeadParam.MatKL - LeftLeadParam.MatKR'),2));
-  err_check = norm(LeftLeadParam.MatKL - LeftLeadParam.MatKR',1)/max([norm(LeftLeadParam.MatKL,1) norm(LeftLeadParam.MatKR',1)]);
+  err_check = norm(LeftLeadParam.MatKL - LeftLeadParam.MatKR')/max([norm(LeftLeadParam.MatKL) norm(LeftLeadParam.MatKR')]);
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant matrix symmetry violation (Left lead bulk), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Matrix Symmetry check passed (Left lead bulk KL and KR) \n');      
   end
 
   % err_check = sum(sum(abs(LeftLeadParam.MatKC - LeftLeadParam.MatKC'),2));
-  err_check = norm(LeftLeadParam.MatKC - LeftLeadParam.MatKC',1)/norm(LeftLeadParam.MatKC,1);
+  err_check = norm(LeftLeadParam.MatKC - LeftLeadParam.MatKC')/norm(LeftLeadParam.MatKC);
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant matrix symmetry violation (Left lead bulk), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Matrix Symmetry check passed (Left lead bulk KC) \n');      
   end
 
   % err_check = sum(sum(abs(RightLeadParam.MatKL - RightLeadParam.MatKR'),2));
-  err_check = norm(RightLeadParam.MatKL - RightLeadParam.MatKR',1)/max([norm(RightLeadParam.MatKL,1) norm(RightLeadParam.MatKR',1)]);
+  err_check = norm(RightLeadParam.MatKL - RightLeadParam.MatKR')/max([norm(RightLeadParam.MatKL) norm(RightLeadParam.MatKR')]);
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant matrix symmetry violation (Right lead bulk), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Matrix Symmetry check passed (Right lead bulk KL and KR) \n');            
   end
 
   % err_check = sum(sum(abs(RightLeadParam.MatKC - RightLeadParam.MatKC'),2));
-  err_check = norm(RightLeadParam.MatKC - RightLeadParam.MatKC',1)/norm(RightLeadParam.MatKC,1);
+  err_check = norm(RightLeadParam.MatKC - RightLeadParam.MatKC')/norm(RightLeadParam.MatKC);
   if gt(err_check,err_tol)
       warnmsg = sprintf('++ Possible significant matrix symmetry violation (Right lead bulk), Epsilon = %8.4e',err_check);
       warning(warnmsg);
-  else
-      fprintf(1,'\t  ... Matrix Symmetry check passed (Right lead bulk KC) \n');            
   end
 
   for nlayer = 2:(numel(CenterParam.Lyr)-1)
       % err_check = sum(sum(abs(CenterParam.Lyr(nlayer).MatKC-CenterParam.Lyr(nlayer).MatKC'),2));    
-      err_check = norm(CenterParam.Lyr(nlayer).MatKC-CenterParam.Lyr(nlayer).MatKC',1)/norm(CenterParam.Lyr(nlayer).MatKC,1);    
+      err_check = norm(CenterParam.Lyr(nlayer).MatKC-CenterParam.Lyr(nlayer).MatKC')/norm(CenterParam.Lyr(nlayer).MatKC);    
       if gt(err_check,err_tol)
           warnmsg = sprintf('++ Possible significant matrix symmetry violation (Channel layer %d), Epsilon = %8.4e',nlayer,err_check);
           warning(warnmsg);
-      else
-          fprintf(1,'\t  ... Matrix Symmetry check passed (Channel layer %d KC) \n',nlayer);            
       end    
 
       % err_check = sum(sum(abs(CenterParam.Lyr(nlayer).MatKL-CenterParam.Lyr(nlayer-1).MatKR'),2))
-      err_check = norm(CenterParam.Lyr(nlayer).MatKL-CenterParam.Lyr(nlayer-1).MatKR',1) ... 
-                  /max([norm(CenterParam.Lyr(nlayer).MatKL,1) norm(CenterParam.Lyr(nlayer-1).MatKR',1)]);        
+      err_check = norm(CenterParam.Lyr(nlayer).MatKL-CenterParam.Lyr(nlayer-1).MatKR') ... 
+                  /max([norm(CenterParam.Lyr(nlayer).MatKL) norm(CenterParam.Lyr(nlayer-1).MatKR')]);        
       if gt(err_check,err_tol)
           warnmsg = sprintf('++ Possible significant matrix symmetry violation (Channel layer %d), Epsilon = %8.4e',nlayer,err_check);
           warning(warnmsg);
-      else
-          fprintf(1,'\t  ... Matrix Symmetry check passed (Channel layer %d KL) \n',nlayer);            
       end    
     
       % err_check = sum(sum(abs(CenterParam.Lyr(nlayer).MatKR-CenterParam.Lyr(nlayer+1).MatKL'),2));
-      err_check = norm(CenterParam.Lyr(nlayer).MatKR-CenterParam.Lyr(nlayer+1).MatKL',1) ...
-                  /max([norm(CenterParam.Lyr(nlayer).MatKR,1) norm(CenterParam.Lyr(nlayer+1).MatKL',1)]);        
+      err_check = norm(CenterParam.Lyr(nlayer).MatKR-CenterParam.Lyr(nlayer+1).MatKL') ...
+                  /max([norm(CenterParam.Lyr(nlayer).MatKR) norm(CenterParam.Lyr(nlayer+1).MatKL')]);        
       if gt(err_check,err_tol)
           warnmsg = sprintf('++ Possible significant matrix symmetry violation (Channel layer %d), Epsilon = %8.4e',nlayer,err_check);
           warning(warnmsg);
-      else
-          fprintf(1,'\t  ... Matrix Symmetry check passed (Channel layer %d KR) \n',nlayer);            
       end        
   end
 
   for nlayer = [1 length(CenterParam.Lyr)]
-      % err_check = sum(sum(abs(CenterParam.Lyr(nlayer).MatKC-CenterParam.Lyr(nlayer).MatKC'),2));
-      err_check = norm(CenterParam.Lyr(nlayer).MatKC-CenterParam.Lyr(nlayer).MatKC',1)/norm(CenterParam.Lyr(nlayer).MatKC,1);        
+      err_check = sum(sum(abs(CenterParam.Lyr(nlayer).MatKC-CenterParam.Lyr(nlayer).MatKC'),2));    
       if gt(err_check,err_tol)
           warnmsg = sprintf('++ Possible significant matrix symmetry violation (Channel layer %d), Epsilon = %8.4e',nlayer,err_check);
           warning(warnmsg);
-      else
-          fprintf(1,'\t  ... Matrix Symmetry check passed (Channel layer %d KC) \n',nlayer);            
       end    
   end
 

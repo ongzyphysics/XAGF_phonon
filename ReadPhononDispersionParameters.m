@@ -86,36 +86,19 @@ function [LeftPhonDisp, RightPhonDisp] = ReadPhononDispersionParameters(DataFile
       end
 
       % === Read mass-normalized force constant matrices ===
-      fname = 'Left_Phonon_M.agf';
-      fname_mat = 'Left_Phonon_M.agfm';
-      if exist(fname)==2
-          M = importdata(fname,' ',0);
-      elseif exist(fname_mat)==2
-          tmp = load(fname_mat,'-mat','M');
-          M = full(tmp.M);
-      else
-          error(sprintf('<!!!> %s and %s not found.', fname, fname_mat));    
-      end
+      M = importdata('Left_Phonon_M.agf',' ',0);
       InvSqrtM = diag(1./sqrt(diag(M)));
       for ncell = 1:1:numel(PrimCell)
           fname = sprintf('Left_Phonon_K%d.agf',ncell); 
-          fname_mat = sprintf('Left_Phonon_K%d.agfm',ncell); 
-          if exist(fname)==2
-              TempK = importdata(fname,' ',0);
-              nmatrows = size(TempK,1); % no. of rows
-              nmatcols = size(TempK,2); % no. of columns
+          TempK = importdata(fname,' ',0);
+          nmatrows = size(TempK,1); % no. of rows
+          nmatcols = size(TempK,2); % no. of columns
 
-              if eq(nmatcols,2*nmatrows)
-                  K = TempK(1:nmatrows,1:nmatrows) ...
-                      + 1i*TempK(1:nmatrows,(1:nmatrows)+nmatrows);
-              else
-                  K = TempK;
-              end
-          elseif exist(fname_mat)==2
-              tmp = load(fname_mat,'-mat','K');
-              K = full(tmp.K);
-          else 
-              error(sprintf('<!!!> %s and %s not found.', fname, fname_mat));    
+          if eq(nmatcols,2*nmatrows)
+              K = TempK(1:nmatrows,1:nmatrows) ...
+                  + 1i*TempK(1:nmatrows,(1:nmatrows)+nmatrows);
+          else
+              K = TempK;
           end
           PrimCell(ncell).H = InvSqrtM*K*InvSqrtM; % mass-normalized force-constant matrix for unit cell
       end
@@ -210,36 +193,19 @@ function [LeftPhonDisp, RightPhonDisp] = ReadPhononDispersionParameters(DataFile
       end
 
       % === Read mass-normalized force constant matrices ===
-      fname = 'Right_Phonon_M.agf';
-      fname_mat = 'Right_Phonon_M.agfm';
-      if exist(fname)==2
-          M = importdata(fname,' ',0);
-      elseif exist(fname_mat)==2
-          tmp = load(fname_mat,'-mat','M');
-          M = full(tmp.M);
-      else
-          error(sprintf('<!!!> %s and %s not found.', fname, fname_mat));    
-      end
+      M = importdata('Right_Phonon_M.agf',' ',0);
       InvSqrtM = diag(1./sqrt(diag(M)));
       for ncell = 1:1:numel(PrimCell)
           fname = sprintf('Right_Phonon_K%d.agf',ncell); 
-          fname_mat = sprintf('Right_Phonon_K%d.agfm',ncell); 
-          if exist(fname)==2
-              TempK = importdata(fname,' ',0);
-              nmatrows = size(TempK,1); % no. of rows
-              nmatcols = size(TempK,2); % no. of columns
+          TempK = importdata(fname,' ',0);
+          nmatrows = size(TempK,1); % no. of rows
+          nmatcols = size(TempK,2); % no. of columns
 
-              if eq(nmatcols,2*nmatrows)
-                  K = TempK(1:nmatrows,1:nmatrows) ...
-                      + 1i*TempK(1:nmatrows,(1:nmatrows)+nmatrows);
-              else
-                  K = TempK;
-              end
-          elseif exist(fname_mat)==2
-              tmp = load(fname_mat,'-mat','K');
-              K = full(tmp.K);
-          else 
-              error(sprintf('<!!!> %s and %s not found.', fname, fname_mat));    
+          if eq(nmatcols,2*nmatrows)
+              K = TempK(1:nmatrows,1:nmatrows) ...
+                  + 1i*TempK(1:nmatrows,(1:nmatrows)+nmatrows);
+          else
+              K = TempK;
           end
           PrimCell(ncell).H = InvSqrtM*K*InvSqrtM; % mass-normalized force-constant matrix for unit cell
       end

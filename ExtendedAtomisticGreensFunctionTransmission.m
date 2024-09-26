@@ -28,7 +28,6 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
   [LeftLeadParam, RightLeadParam, CenterParam] = ReadSimulationParameters(InputFilesDir); 
   fprintf(1,'   read in %f seconds. \n\n',toc);
   % -----------------------------------------------------------------
-  % whos % DEBUGGING
 
   % -----------------------------------------------------------------
   % Read phonon dispersion parameters and matrices 
@@ -45,16 +44,7 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
   tic;
   [Left, Center, Right] = ConvertMassNormalizedMatrices(LeftLeadParam,CenterParam,RightLeadParam);
   fprintf(1,'++ Conversion of parameter took %f seconds. \n\n',toc);
-
   % -----------------------------------------------------------------
-  % Remove original input force constant and mass matrices to save memory (03 Jul 2024)
-  % -----------------------------------------------------------------
-  LeftLeadParam = rmfield(LeftLeadParam,{'MatM','MatKL','MatKC','MatKR'}); 
-  RightLeadParam = rmfield(RightLeadParam,{'MatM','MatKL','MatKC','MatKR'});
-  CenterParam = rmfield(CenterParam,{'Lyr','MatKCL','MatKLC','MatKCR','MatKRC'});
-  
-  % -----------------------------------------------------------------
-  % whos % DEBUGGING
 
   for nw = 1:numel(wvec)
       % disp(nw);
@@ -74,27 +64,13 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
             % This requires "TransverseSubspaceTransform.m" and "CombineTransverseSubspaceComponents.m"         
           % LeftPhonon(nw) = MapBulkPhononModes(wvec(nw),LeftPhonon(nw),Left,LeftPhonDisp);
           LeftPhonon(nw) = MapBulkPhononModes(wvec(nw),TempLeftPhonon,Left,LeftPhonDisp);
-          clear TempLeftPhonon; % remove temp variable for memory efficiency
             % This requires "GenerateImageBZPoints.m"
           % LeftPhonon(nw) = RebuildExtendedModeEigenvector(wvec(nw),LeftPhonon(nw),Left,LeftPhonDisp);
           % LeftPhonon(nw) = SetPropagatingModeReflectionSymmetry(LeftPhonon(nw));
           fprintf(1,'++ Left surface Greens function computation took %f seconds. \n\n',toc); 
       end
-      
+           
       % -----------------------------------------------------------------
-      % whos % DEBUGGING
-
-      % -----------------------------------------------------------------
-      % Removing left-lead redundant matrix variables as they are not needed for transmission 
-      % -----------------------------------------------------------------                 
-      LeftPhonon(nw).U_plus     = [];
-      LeftPhonon(nw).U_plus_adv = [];
-      LeftPhonon(nw).V_plus     = []; 
-      LeftPhonon(nw).V_plus_adv = [];
-      LeftPhonon(nw).MatSurfGR  = [];
-      
-      % -----------------------------------------------------------------
-      % whos % DEBUGGING
 
       % -----------------------------------------------------------------
       % Calculate surface Green's functions for right lead
@@ -111,7 +87,6 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
           % This requires "TransverseSubspaceTransform.m" and "CombineTransverseSubspaceComponents.m"
           % RightPhonon(nw) = MapBulkPhononModes(wvec(nw),RightPhonon(nw),Right,RightPhonDisp);
           RightPhonon(nw) = MapBulkPhononModes(wvec(nw),TempRightPhonon,Right,RightPhonDisp);
-          clear TempRightPhonon; % remove temp variable for memory efficiency
           % This requires "GenerateImageBZPoints.m"
           % RightPhonon(nw) = RebuildExtendedModeEigenvector(wvec(nw),RightPhonon(nw),Right,RightPhonDisp);
           % RightPhonon(nw) = SetPropagatingModeReflectionSymmetry(RightPhonon(nw));
@@ -119,19 +94,6 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
       end
       
       % -----------------------------------------------------------------
-      % whos % DEBUGGING
-
-      % -----------------------------------------------------------------
-      % Removing right-lead redundant matrix variables as they are not needed for transmission 
-      % -----------------------------------------------------------------                
-      RightPhonon(nw).U_minus     = []; 
-      RightPhonon(nw).U_minus_adv = [];
-      RightPhonon(nw).V_minus     = []; 
-      RightPhonon(nw).V_minus_adv = [];
-      RightPhonon(nw).MatSurfGL   = [];
-      
-      % -----------------------------------------------------------------
-      % whos % DEBUGGING
 
       % -----------------------------------------------------------------
       % Compute frequency-dependent transmission and reflection matrices
@@ -141,7 +103,6 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
                        LeftPhonon(nw),RightPhonon(nw),Center,Left,Right); % This requires "GreensFunctionSolver.m"
       fprintf(1,'++ Phonon transmission computation took %f seconds. \n\n',toc);
       % -----------------------------------------------------------------
-      % whos % DEBUGGING
 
       % -----------------------------------------------------------------
       % Compute frequency-dependent phonon density of states for leads
@@ -151,7 +112,6 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
       RightPhononRho(nw) = GetPhononDensityOfStates(wvec(nw),RightPhonon(nw));
       fprintf(1,'++ Phonon density of states computation took %f seconds. \n\n',toc);
       % -----------------------------------------------------------------
-      % whos % DEBUGGING
 
       % -----------------------------------------------------------------
       % Store GF data if required 
@@ -199,6 +159,9 @@ function ExtendedAtomisticGreensFunctionTransmission(InputFilesDir,OutputFilesDi
       RightPhonon(nw).V_minus     = [];
       RightPhonon(nw).V_minus_adv = [];
   end
+
+  % save('TempData.mat','PhononData','LeftPhonon','RightPhonon','Left','Right','LeftPhonDisp','RightPhonDisp','wvec'); % DEBUG
+  % return; % DEBUG LINE
 
   LeftPhonon = rmfield(LeftPhonon,{'MatSurfGL','MatSurfGR','MatBulkG', ...      
                'U_plus','U_plus_adv','U_minus','U_minus_adv', ... 

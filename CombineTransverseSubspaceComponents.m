@@ -13,10 +13,10 @@ function LeadPhonon = CombineTransverseSubspaceComponents(SubLeadPhonon,InputPar
   LeadPhonon.U_plus_adv  = zeros(size(HC));
   LeadPhonon.U_minus     = zeros(size(HC));
   LeadPhonon.U_minus_adv = zeros(size(HC));
-  LeadPhonon.V_plus      = sparse( zeros(size(HC)) );
-  LeadPhonon.V_plus_adv  = sparse( zeros(size(HC)) );
-  LeadPhonon.V_minus     = sparse( zeros(size(HC)) );
-  LeadPhonon.V_minus_adv = sparse( zeros(size(HC)) );
+  LeadPhonon.V_plus      = zeros(size(HC));
+  LeadPhonon.V_plus_adv  = zeros(size(HC));
+  LeadPhonon.V_minus     = zeros(size(HC));
+  LeadPhonon.V_minus_adv = zeros(size(HC));
   LeadPhonon.VecV_plus      = diag(zeros(size(HC)));
   LeadPhonon.VecV_plus_adv  = diag(zeros(size(HC)));
   LeadPhonon.VecV_minus     = diag(zeros(size(HC)));
@@ -248,10 +248,10 @@ function LeadPhonon = CombineTransverseSubspaceComponents(SubLeadPhonon,InputPar
       end
   end
   
-  LeadPhonon.V_plus      = sparse( diag(VecV_plus) );
-  LeadPhonon.V_plus_adv  = sparse( diag(VecV_plus_adv) );
-  LeadPhonon.V_minus     = sparse( diag(VecV_minus) );
-  LeadPhonon.V_minus_adv = sparse( diag(VecV_minus_adv) );
+  LeadPhonon.V_plus      = diag(VecV_plus);
+  LeadPhonon.V_plus_adv  = diag(VecV_plus_adv);
+  LeadPhonon.V_minus     = diag(VecV_minus);
+  LeadPhonon.V_minus_adv = diag(VecV_minus_adv);
 
   LeadPhonon.VecV_plus      = VecV_plus;
   LeadPhonon.VecV_plus_adv  = VecV_plus_adv;
