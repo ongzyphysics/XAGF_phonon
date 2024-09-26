@@ -5,16 +5,24 @@ function [Left, Center, Right] = ConvertMassNormalizedMatrices(LeftLeadParam,Cen
   Lyr = CenterParam.Lyr; % structure containing IFC's and atomic masses in scattering region
   nmax = length(Lyr); % no. of layers in scattering region
 
-  for n = 1:1:nmax % we set up the inverse square root mass matrix for mass-normalizing the force constant matrices
-      [V,D] = eig([Lyr(n).MatM]);
-      Lyr(n).InvSqrtM = V*diag(1./sqrt(diag(D)))*V';    
+  for n = 1:1:nmax % we set up the inverse square root mass matrix for mass-normalizing the force constant matrices 
+      if isdiag(Lyr(n).MatM) % if diagonal matrix
+          Lyr(n).InvSqrtM = sparse( diag(1./sqrt(diag(Lyr(n).MatM))) );
+      else
+          [V,D] = eig(full([Lyr(n).MatM]));
+          Lyr(n).InvSqrtM = sparse( V*diag(1./sqrt(diag(D)))*V' );        
+      end
   end
 
   % --------------------------------------------------
   % Set left lead parameters and variables
   % --------------------------------------------------  
-  [V,D] = eig([LeftLeadParam.MatM]);
-  Left.InvSqrtM = V*diag(1./sqrt(diag(D)))*V';
+  if isdiag(LeftLeadParam.MatM)
+      Left.InvSqrtM = diag(1./sqrt(diag(LeftLeadParam.MatM)));
+  else
+      [V,D] = eig(full([LeftLeadParam.MatM]));
+      Left.InvSqrtM = sparse( V*diag(1./sqrt(diag(D)))*V' );
+  end
   Left.MatHL = Left.InvSqrtM * LeftLeadParam.MatKL * Left.InvSqrtM;
   Left.MatHC = Left.InvSqrtM * LeftLeadParam.MatKC * Left.InvSqrtM;
   Left.MatHR = Left.InvSqrtM * LeftLeadParam.MatKR * Left.InvSqrtM;
@@ -66,8 +74,12 @@ function [Left, Center, Right] = ConvertMassNormalizedMatrices(LeftLeadParam,Cen
   % --------------------------------------------------
   % Set right lead parameters and variables
   % --------------------------------------------------  
-  [V,D] = eig([RightLeadParam.MatM]);
-  Right.InvSqrtM = V*diag(1./sqrt(diag(D)))*V';
+  if isdiag(RightLeadParam.MatM)
+      Right.InvSqrtM = diag(1./sqrt(diag(RightLeadParam.MatM)));
+  else
+      [V,D] = eig(full([RightLeadParam.MatM]));
+      Right.InvSqrtM = sparse( V*diag(1./sqrt(diag(D)))*V' );
+  end
   Right.MatHL = Right.InvSqrtM * RightLeadParam.MatKL * Right.InvSqrtM;
   Right.MatHC = Right.InvSqrtM * RightLeadParam.MatKC * Right.InvSqrtM;
   Right.MatHR = Right.InvSqrtM * RightLeadParam.MatKR * Right.InvSqrtM;
@@ -135,7 +147,6 @@ function [Left, Center, Right] = ConvertMassNormalizedMatrices(LeftLeadParam,Cen
       end
   end
 
-
   HCL = Lyr(1).InvSqrtM * CenterParam.MatKCL * Left.InvSqrtM;
   HLC = HCL';
   HCR = Lyr(nmax).InvSqrtM * CenterParam.MatKCR * Right.InvSqrtM;
@@ -148,6 +159,25 @@ function [Left, Center, Right] = ConvertMassNormalizedMatrices(LeftLeadParam,Cen
   Lyr = rmfield(Lyr,'MatKR');
   Left  = rmfield(Left,'InvSqrtM');
   Right = rmfield(Right,'InvSqrtM');
+  
+  Left.MatHL = sparse(Left.MatHL);
+  Left.MatHC = sparse(Left.MatHC);
+  Left.MatHR = sparse(Left.MatHR);
+
+  Right.MatHL = sparse(Right.MatHL);
+  Right.MatHC = sparse(Right.MatHC);
+  Right.MatHR = sparse(Right.MatHR);
+  
+  for n = 1:1:nmax
+      Lyr(n).MatHL = sparse(Lyr(n).MatHL);
+      Lyr(n).MatHC = sparse(Lyr(n).MatHC);
+      Lyr(n).MatHR = sparse(Lyr(n).MatHR);
+  end
+  
+  HCL = sparse(HCL);
+  HCR = sparse(HCR);
+  HLC = sparse(HLC);
+  HRC = sparse(HRC);  
 
   Center.Lyr = Lyr;
   Center.HCL = HCL;

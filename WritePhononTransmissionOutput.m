@@ -80,26 +80,26 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       qy_L_temp = qy_L_temp(nrange_L_temp);
       qz_L_temp = qz_L_temp(nrange_L_temp);
       b_L_temp  = b_L_temp(nrange_L_temp);
-      velx_L_temp = velx_L_temp(nrange_L_temp);
-      vely_L_temp = vely_L_temp(nrange_L_temp);
-      velz_L_temp = velz_L_temp(nrange_L_temp);
+      velx_L_temp = full( velx_L_temp(nrange_L_temp) );
+      vely_L_temp = full( vely_L_temp(nrange_L_temp) ) ;
+      velz_L_temp = full( velz_L_temp(nrange_L_temp) );
 
       qx_R_temp = qx_R_temp(nrange_R_temp);
       qy_R_temp = qy_R_temp(nrange_R_temp);
       qz_R_temp = qz_R_temp(nrange_R_temp);
       b_R_temp  = b_R_temp(nrange_R_temp);
-      velx_R_temp = velx_R_temp(nrange_R_temp);
-      vely_R_temp = vely_R_temp(nrange_R_temp);
-      velz_R_temp = velz_R_temp(nrange_R_temp);
+      velx_R_temp = full( velx_R_temp(nrange_R_temp) );
+      vely_R_temp = full( vely_R_temp(nrange_R_temp) );
+      velz_R_temp = full( velz_R_temp(nrange_R_temp) );
 
-      t_L_temp = t_L_temp(nrange_L_temp);
-      t_R_temp = t_R_temp(nrange_R_temp);
+      t_L_temp = full( t_L_temp(nrange_L_temp) );
+      t_R_temp = full( t_R_temp(nrange_R_temp) );
       q_tran1_L_temp = q_tran1_L_temp(nrange_L_temp);
       q_tran2_L_temp = q_tran2_L_temp(nrange_L_temp);
       q_tran1_R_temp = q_tran1_R_temp(nrange_R_temp);
       q_tran2_R_temp = q_tran2_R_temp(nrange_R_temp);   
-      v_L_temp = v_L_temp(nrange_L_temp);
-      v_R_temp = v_R_temp(nrange_R_temp);   
+      v_L_temp = full( v_L_temp(nrange_L_temp) );
+      v_R_temp = full( v_R_temp(nrange_R_temp) );   
       p_L_temp = p_L_temp(nrange_L_temp);
       p_R_temp = p_R_temp(nrange_R_temp);   
 
@@ -179,14 +179,14 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       qyr_L_temp = qyr_L_temp(nrrange_L_temp);
       qzr_L_temp = qzr_L_temp(nrrange_L_temp);
       br_L_temp  = br_L_temp(nrrange_L_temp);
-      velxr_L_temp = velxr_L_temp(nrrange_L_temp);
-      velyr_L_temp = velyr_L_temp(nrrange_L_temp);
-      velzr_L_temp = velzr_L_temp(nrrange_L_temp);
+      velxr_L_temp = full( velxr_L_temp(nrrange_L_temp) );
+      velyr_L_temp = full( velyr_L_temp(nrrange_L_temp) );
+      velzr_L_temp = full( velzr_L_temp(nrrange_L_temp) );
 
-      tr_L_temp = tr_L_temp(nrrange_L_temp);
+      tr_L_temp = full( tr_L_temp(nrrange_L_temp) );
       qr_tran1_L_temp = qr_tran1_L_temp(nrrange_L_temp);
       qr_tran2_L_temp = qr_tran2_L_temp(nrrange_L_temp);
-      vr_L_temp = vr_L_temp(nrrange_L_temp);
+      vr_L_temp = full( vr_L_temp(nrrange_L_temp) );
       pr_L_temp = pr_L_temp(nrrange_L_temp);
 
       qr_L_temp = qr_L_temp(nrrange_L_temp);
@@ -196,15 +196,15 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       qyr_R_temp = qyr_R_temp(nrrange_R_temp);
       qzr_R_temp = qzr_R_temp(nrrange_R_temp);
       br_R_temp  = br_R_temp(nrrange_R_temp);
-      velxr_R_temp = velxr_R_temp(nrrange_R_temp);
-      velyr_R_temp = velyr_R_temp(nrrange_R_temp);
-      velzr_R_temp = velzr_R_temp(nrrange_R_temp);
+      velxr_R_temp = full( velxr_R_temp(nrrange_R_temp) );
+      velyr_R_temp = full( velyr_R_temp(nrrange_R_temp) );
+      velzr_R_temp = full( velzr_R_temp(nrrange_R_temp) );
 
-      tr_R_temp = tr_R_temp(nrrange_R_temp);
+      tr_R_temp = full( tr_R_temp(nrrange_R_temp) );
 
       qr_tran1_R_temp = qr_tran1_R_temp(nrrange_R_temp);
       qr_tran2_R_temp = qr_tran2_R_temp(nrrange_R_temp);
-      vr_R_temp = vr_R_temp(nrrange_R_temp);
+      vr_R_temp = full( vr_R_temp(nrrange_R_temp) );
       pr_R_temp = pr_R_temp(nrrange_R_temp);
 
       qr_R_temp = qr_R_temp(nrrange_R_temp);
@@ -241,10 +241,10 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
           end
       end
 
-      Xi_L = real(LeftPhonon(nw).Xi_negf);
-      Xi_R = real(RightPhonon(nw).Xi_negf);
-      Xi_C_negf = real(PhononData(nw).Xi_negf);
-      Xi_C_mode = real(PhononData(nw).Xi_mode);
+      Xi_L = full( real(LeftPhonon(nw).Xi_negf) );
+      Xi_R = full( real(RightPhonon(nw).Xi_negf) );
+      Xi_C_negf = full( real(PhononData(nw).Xi_negf) );
+      Xi_C_mode = full( real(PhononData(nw).Xi_mode) );
     
       fprintf(fid_tran,'%16.8e %16.8e %16.8e %16.8e %16.8e \n', w, Xi_L, Xi_R, Xi_C_negf, Xi_C_mode);                
   end

@@ -40,6 +40,7 @@ function WritePhononScatteringOutput(DataFilesDir,wvec_scatter,wvec,LeftPhonon,R
               tmatrix_tmp = tmatrix_tmp(nrange_out_R,nrange_in_L);
               rmatrix_tmp = rmatrix_tmp(nrange_out_L,nrange_in_L);
               Smatrix_L = [rmatrix_tmp' tmatrix_tmp'];
+              Smatrix_L = full( Smatrix_L ); % make de-sparsify matrix for output
               % tmatrix_L = [tmatrix_tmp; rmatrix_tmp]';
               % tmatrix = [tmatrix sum(abs(tmatrix).^2,2)];
 
@@ -57,6 +58,7 @@ function WritePhononScatteringOutput(DataFilesDir,wvec_scatter,wvec,LeftPhonon,R
               tmatrix_tmp = tmatrix_tmp(nrange_out_L,nrange_in_R);
               rmatrix_tmp = rmatrix_tmp(nrange_out_R,nrange_in_R);
               Smatrix_R = [tmatrix_tmp' rmatrix_tmp'];
+              Smatrix_R = full( Smatrix_R ); % make de-sparsify matrix for output
               % tmatrix_R = [rmatrix_tmp; tmatrix_tmp]';
 
               % === write scattering (transition probability) data ===
@@ -223,6 +225,7 @@ function WritePhononScatteringOutput(DataFilesDir,wvec_scatter,wvec,LeftPhonon,R
               % --- incident phonons in left lead (type -1,+1) ---
               rmatrix_tmp = PhononData(nw_scatter).r_LL;
               rmatrix_tmp = rmatrix_tmp(nrange_out_L,nrange_in_L);
+              rmatrix_tmp = full( rmatrix_tmp ); % de-sparsify matrix for output
 
               for n1 = 1:numel(b_in_L_temp) 
                   qx1 = qx_in_L_temp(n1);
@@ -234,6 +237,7 @@ function WritePhononScatteringOutput(DataFilesDir,wvec_scatter,wvec,LeftPhonon,R
                   vz1 = velz_in_L_temp(n1);
                   qnorm1 = norm([qx1 qy1 qz1]);
                  
+                  p1_spec = -5.000; % set default value as negative 5 in case there is no symmetry
                   for n2 = 1:numel(b_out_L_temp) 
                       qx2 = qx_out_L_temp(n2);
                       qy2 = qy_out_L_temp(n2);
@@ -241,7 +245,7 @@ function WritePhononScatteringOutput(DataFilesDir,wvec_scatter,wvec,LeftPhonon,R
                       % qnorm2 = norm([qx1 qy1 qz1]);
                       delta_qnorm = norm([(qx1+qx2) (qy1-qy2) (qz1-qz2)]);
                       if lt(delta_qnorm/qnorm1,1E-3)
-                          p1_spec = abs(rmatrix_tmp(n2,n1)).^2;
+                          p1_spec = abs(rmatrix_tmp(n2,n1)).^2;                          
                       end
                   end
                   fprintf(fid, '%3d %3d %14.6e %14.6e %14.6e %3d %14.6e %14.6e %14.6e %14.6e \n', ...
@@ -250,6 +254,7 @@ function WritePhononScatteringOutput(DataFilesDir,wvec_scatter,wvec,LeftPhonon,R
 
               rmatrix_tmp = PhononData(nw_scatter).r_RR;
               rmatrix_tmp = rmatrix_tmp(nrange_out_R,nrange_in_R);
+              rmatrix_tmp = full( rmatrix_tmp ); % de-sparsify matrix for output
 
               for n1 = 1:numel(b_in_R_temp) 
                   qx1 = qx_in_R_temp(n1);
@@ -260,7 +265,8 @@ function WritePhononScatteringOutput(DataFilesDir,wvec_scatter,wvec,LeftPhonon,R
                   vy1 = vely_in_R_temp(n1);
                   vz1 = velz_in_R_temp(n1);
                   qnorm1 = norm([qx1 qy1 qz1]);
-                 
+                  
+                  p1_spec = -5.000; % set default value as negative 5 in case there is no symmetry
                   for n2 = 1:numel(b_out_R_temp) 
                       qx2 = qx_out_R_temp(n2);
                       qy2 = qy_out_R_temp(n2);
