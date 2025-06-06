@@ -99,11 +99,11 @@ function LeadPhonon = ComputeSurfaceGreensFunction(w_in,ww_in,InputParam)
       InvF_minus = (-TauL*InvWsL')';    % Inverse Bloch matrix for left-moving, left-decaying advanced states
       InvF_minus_adv = (-TauL*InvWsL)'; % Inverse Bloch matrix for right-moving, left-decaying advanced states 
   
-      [U_plus,L_plus] = eig(F_plus);                      
+      [U_plus,L_plus] = eig(full(F_plus));                      
         % Eigenvectors and values (phase factors) of retarded right-propagating Bloch matrix, for final states (left-to-right)
       % [U_plus_adv,L_plus_adv] = eig(F_plus_adv);          
         % Eigenvectors and values (phase factors) of advanced right-propagating Bloch matrix, for initial states (right-to-left)
-      [U_minus,InvL_minus] = eig(InvF_minus);             
+      [U_minus,InvL_minus] = eig(full(InvF_minus));             
         % Eigenvectors and values (phase factors) of retarded left-propagating Bloch matrix, for final states (right-to-left)
       % [U_minus_adv,InvL_minus_adv] = eig(InvF_minus_adv); 
         % Eigenvectors and values (phase factors) of advanced left-propagating Bloch matrix, for initial states (left-to-right)
