@@ -76,18 +76,18 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       nrange_R_temp = gt(abs(b_R_temp),0); % indices for propagating incident right-lead states
 
       % ===== (remove non-propagating states) =====
-      qx_L_temp = qx_L_temp(nrange_L_temp);
-      qy_L_temp = qy_L_temp(nrange_L_temp);
-      qz_L_temp = qz_L_temp(nrange_L_temp);
-      b_L_temp  = b_L_temp(nrange_L_temp);
+      qx_L_temp = full( qx_L_temp(nrange_L_temp) );
+      qy_L_temp = full( qy_L_temp(nrange_L_temp) );
+      qz_L_temp = full( qz_L_temp(nrange_L_temp) );
+      b_L_temp  = full( b_L_temp(nrange_L_temp) );
       velx_L_temp = full( velx_L_temp(nrange_L_temp) );
       vely_L_temp = full( vely_L_temp(nrange_L_temp) ) ;
       velz_L_temp = full( velz_L_temp(nrange_L_temp) );
 
-      qx_R_temp = qx_R_temp(nrange_R_temp);
-      qy_R_temp = qy_R_temp(nrange_R_temp);
-      qz_R_temp = qz_R_temp(nrange_R_temp);
-      b_R_temp  = b_R_temp(nrange_R_temp);
+      qx_R_temp = full( qx_R_temp(nrange_R_temp) );
+      qy_R_temp = full( qy_R_temp(nrange_R_temp) );
+      qz_R_temp = full( qz_R_temp(nrange_R_temp) );
+      b_R_temp  = full( b_R_temp(nrange_R_temp) );
       velx_R_temp = full( velx_R_temp(nrange_R_temp) );
       vely_R_temp = full( vely_R_temp(nrange_R_temp) );
       velz_R_temp = full( velz_R_temp(nrange_R_temp) );
@@ -100,11 +100,11 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       q_tran2_R_temp = q_tran2_R_temp(nrange_R_temp);   
       v_L_temp = full( v_L_temp(nrange_L_temp) );
       v_R_temp = full( v_R_temp(nrange_R_temp) );   
-      p_L_temp = p_L_temp(nrange_L_temp);
-      p_R_temp = p_R_temp(nrange_R_temp);   
+      p_L_temp = full( p_L_temp(nrange_L_temp) );
+      p_R_temp = full( p_R_temp(nrange_R_temp) );   
 
-      q_L_temp = q_L_temp(nrange_L_temp);
-      q_R_temp = q_R_temp(nrange_R_temp);
+      q_L_temp = full( q_L_temp(nrange_L_temp) );
+      q_R_temp = full( q_R_temp(nrange_R_temp) );
 
       % ===== (rationalize wave vectors by 2 pi factor for consistency) =====
       qx_L_temp = 2*pi*qx_L_temp;
@@ -175,10 +175,10 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       nrrange_R_temp = gt(abs(br_R_temp),0); % indices for outgoing right-lead propagating states
 
       % ===== (remove non-propagating left-lead states) =====
-      qxr_L_temp = qxr_L_temp(nrrange_L_temp);
-      qyr_L_temp = qyr_L_temp(nrrange_L_temp);
-      qzr_L_temp = qzr_L_temp(nrrange_L_temp);
-      br_L_temp  = br_L_temp(nrrange_L_temp);
+      qxr_L_temp = full( qxr_L_temp(nrrange_L_temp) );
+      qyr_L_temp = full( qyr_L_temp(nrrange_L_temp) );
+      qzr_L_temp = full( qzr_L_temp(nrrange_L_temp) );
+      br_L_temp  = full( br_L_temp(nrrange_L_temp) );
       velxr_L_temp = full( velxr_L_temp(nrrange_L_temp) );
       velyr_L_temp = full( velyr_L_temp(nrrange_L_temp) );
       velzr_L_temp = full( velzr_L_temp(nrrange_L_temp) );
@@ -187,15 +187,15 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       qr_tran1_L_temp = qr_tran1_L_temp(nrrange_L_temp);
       qr_tran2_L_temp = qr_tran2_L_temp(nrrange_L_temp);
       vr_L_temp = full( vr_L_temp(nrrange_L_temp) );
-      pr_L_temp = pr_L_temp(nrrange_L_temp);
+      pr_L_temp = full( pr_L_temp(nrrange_L_temp) );
 
-      qr_L_temp = qr_L_temp(nrrange_L_temp);
+      qr_L_temp = full( qr_L_temp(nrrange_L_temp) );
 
       % ===== (remove non-propagating right-lead states) =====
-      qxr_R_temp = qxr_R_temp(nrrange_R_temp);
-      qyr_R_temp = qyr_R_temp(nrrange_R_temp);
-      qzr_R_temp = qzr_R_temp(nrrange_R_temp);
-      br_R_temp  = br_R_temp(nrrange_R_temp);
+      qxr_R_temp = full( qxr_R_temp(nrrange_R_temp) );
+      qyr_R_temp = full( qyr_R_temp(nrrange_R_temp) );
+      qzr_R_temp = full( qzr_R_temp(nrrange_R_temp) );
+      br_R_temp  = full( br_R_temp(nrrange_R_temp) );
       velxr_R_temp = full( velxr_R_temp(nrrange_R_temp) );
       velyr_R_temp = full( velyr_R_temp(nrrange_R_temp) );
       velzr_R_temp = full( velzr_R_temp(nrrange_R_temp) );
@@ -205,9 +205,9 @@ function WritePhononTransmissionOutput(DataFilesDir,wvec,LeftPhonon,RightPhonon,
       qr_tran1_R_temp = qr_tran1_R_temp(nrrange_R_temp);
       qr_tran2_R_temp = qr_tran2_R_temp(nrrange_R_temp);
       vr_R_temp = full( vr_R_temp(nrrange_R_temp) );
-      pr_R_temp = pr_R_temp(nrrange_R_temp);
+      pr_R_temp = full( pr_R_temp(nrrange_R_temp) );
 
-      qr_R_temp = qr_R_temp(nrrange_R_temp);
+      qr_R_temp = full( qr_R_temp(nrrange_R_temp) );
 
       % ===== (rationalize wave vectors by 2 pi factor for consistency) =====
       qxr_L_temp = 2*pi*qxr_L_temp;
