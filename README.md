@@ -3,5 +3,6 @@ This is the Matlab/Octave code for the Extended Atomistic Green's Function (XAGF
 References:
 
 Z.-Y. Ong, "Atomistic 𝑆-matrix method for numerical simulation of phonon reflection, transmission, and boundary scattering," Phys. Rev. B 98, 195301 (2018)
+
 Z.-Y. Ong, "Tutorial: Concepts and numerical techniques for modeling individual phonon transmission at interfaces," J. Appl. Phys. 124, 151101 (2018)
 
