@@ -1,4 +1,4 @@
-# Title: Extended Atomistic Green's Functio (XAGF)
+# Title: Extended Atomistic Green's Function (XAGF)
 
 ## Author
 
